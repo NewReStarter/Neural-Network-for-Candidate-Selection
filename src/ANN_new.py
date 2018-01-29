@@ -1,5 +1,4 @@
-#Training set accuracy: [0.39777219]
-#Testing set accuracy: [0.37931034]
+import json
 import copy
 import numpy as np
 # pybrain: https://github.com/pybrain/pybrain 
@@ -24,7 +23,7 @@ for i in range(len(data)):
     for j in range(3, len(data[i]) - 1):
         temp = temp + ',' + data[i][j]
     temp = temp[2 : -1].replace('""', '"')
-
+    
     afterjson[i].extend([data[i][2], data[i][-1], data[i][1], json.loads(temp)])
 selectdata = []
 for big in afterjson:
@@ -84,7 +83,7 @@ qualilist = list(set([item[10].strip() for item in numdata]))
 qualidict = {}
 for i in range(len(qualilist)):
     qualidict[qualilist[i]] = i
-# all possible values for study_mode_of_tertiary_education
+# all possible values for study_mode_of_tertiary_educatio
 modelist = list(set([item[11].strip() for item in numdata]))
 modedict = {}
 for i in range(len(modelist)):
@@ -92,12 +91,13 @@ for i in range(len(modelist)):
 # all possible values for university_of_tertiary_education
 unilist = list(set([item[12].strip() for item in numdata]))
 unidict = {}
-
-# special treatment on university
 for i in range(len(unilist)):
     unidict[unilist[i]] = i
 for i in range(len(numdata)):
-    numdata[i][1] = statusdict[numdata[i][1].strip()]
+    if numdata[i][1].strip() == 'invited':
+        numdata[i][1] = 1
+    else:
+        numdata[i][1] = -1
     numdata[i][8] = honourdict[numdata[i][8].strip()]
     numdata[i][9] = majordict[numdata[i][9].strip()]
     numdata[i][10] = qualidict[numdata[i][10].strip()]
@@ -110,16 +110,16 @@ fobj.write('\n')
 fobj.close()
 
 
-# artificial neural network
+# ANN
 net = buildNetwork(14, 14, 1, bias = True, outclass=SoftmaxLayer)
-ds = ClassificationDataSet(14, 1, nb_classes = 2)
+ds = ClassificationDataSet(14, 1, nb_classes = 3)
 for item in numdata:
     ds.addSample(tuple(item[2 : ]), (item[1]))
 dsTrain,dsTest = ds.splitWithProportion(0.8)
 
 
 print('Trainging')
-trainer = BackpropTrainer(net, ds, verbose = True, learningrate=0.0001)
+trainer = BackpropTrainer(net, ds, momentum=0.1, verbose=True, weightdecay=0.01)
 # trainer.train()
 trainer.trainUntilConvergence(maxEpochs = 20)  
 print('Finish training')
@@ -129,9 +129,9 @@ Traintar = dsTrain['target']
 Testinp = dsTest['input']
 Testtar = dsTest['target']
 forecastTrain = net.activateOnDataset(dsTrain)
-print('The accuracy on Training set: ' + str(1 - sum(abs(np.array(forecastTrain) - Traintar)) / float(len(dsTrain))))
+print('The accuracy on Training set: ' + str(1 - sum(abs(np.array(forecastTrain) - Traintar)) / float(len(dsTrain)) / 2))
 forecastTest = net.activateOnDataset(dsTest)
-print('The accuracy on Testing set: ' + str(1 - sum(abs(np.array(forecastTest) - Testtar)) / float(len(dsTest))))
+print('The accuracy on Testing set: ' + str(1 - sum(abs(np.array(forecastTest) - Testtar)) / float(len(dsTest)) / 2))
 
 headernew = ['forecast_status', 'real_status', 'age', 'activities num', 'language num', 'scholarship', 'secondary_education num', 
           'tertiary_education num', 'honour', 'major_of_tertiary_education', 'qualification_of_tertiary_education', 
