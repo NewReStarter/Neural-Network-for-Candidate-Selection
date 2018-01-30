@@ -1,7 +1,7 @@
 # Neural-Network-for-Candidate-Selection
 pybrain implementation ANN(Artificial Neural Network)
 
-**latest accuracy:** 0.37931034
+**latest accuracy:** 0.47482759(ANN_new.py)
 
 ### Selected Features
 0. id
