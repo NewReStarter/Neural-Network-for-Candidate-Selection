@@ -1,7 +1,7 @@
 # Neural-Network-for-Candidate-Selection
 pybrain implementation ANN(Artificial Neural Network)
 
-**latest accuracy:** 0.47482759(ANN_new.py)
+latest accuracy:** 0.61350575(ANN_new_new.py)
 
 ### Selected Features
 0. id
@@ -42,10 +42,10 @@ python 2.7.12 on Ubuntu 16.04
 - [x] Raw SVM model
 - [x] Raw Neural Network model
 - [x] Cross Validation (Neural Network is chosen)
-- [ ] Feature Engineering (on going)
-    - [ ] Mutual Information
+- [x] Feature Engineering 
+    - [x] Mutual Information
     - [x] penalty function
-    - [ ] Manual Data Grouping (on going)
+    - [x] Manual Data Grouping 
 - [ ] parameter tuning (on going)
 - [ ] enhanced model
     - [ ] LSTM
