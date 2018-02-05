@@ -46,8 +46,13 @@ python 2.7.12 on Ubuntu 16.04
     - [x] Mutual Information
     - [x] penalty function
     - [x] Manual Data Grouping 
-- [ ] parameter tuning (on going)
+- [x] parameter tuning  
 - [ ] enhanced model
     - [ ] LSTM
     - [ ] RNN (Recurrent Neural Networks)
-
+    
+- [ ] Evaluate the forcasting result
+if the result is usable:
+- [ ] Embed the learning system to the web application
+else:
+- [ ] Summary on the failure
